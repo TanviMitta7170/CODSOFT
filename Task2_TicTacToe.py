@@ -8,7 +8,6 @@ def print_board(board):
     print("\n")
 
 def check_winner(board):
-    # Check rows, columns, and diagonals
     for row in board:
         if row[0] == row[1] == row[2] and row[0] != " ":
             return row[0]
@@ -31,12 +30,9 @@ def check_winner(board):
 def minimax(board, depth, is_maximizing, alpha, beta):
     winner = check_winner(board)
     
-    # SCORING: 
-    # Prefer winning sooner (10 - depth) to be aggressive.
-    # If losing is inevitable, delay it (depth - 10).
-    if winner == "X": # AI wins
+    if winner == "X": 
         return 10 - depth
-    if winner == "O": # Human wins
+    if winner == "O": 
         return depth - 10
     if winner == "Tie":
         return 0
@@ -74,7 +70,6 @@ def best_move(board):
     alpha = -math.inf
     beta = math.inf
     
-    # 1. FIND ALL OPTIMAL MOVES (Safety Check)
     for r in range(3):
         for c in range(3):
             if board[r][c] == " ":
@@ -82,34 +77,27 @@ def best_move(board):
                 score = minimax(board, 0, False, alpha, beta)
                 board[r][c] = " "
                 
-                # If we found a strictly better score, reset the list
                 if score > best_score:
                     best_score = score
                     best_moves = [(r, c)]
-                # If this move is essentially equal to the best, add to list
+
                 elif score == best_score:
                     best_moves.append((r, c))
-    
-    # 2. FILTER FOR STRATEGIC ADVANTAGE (The Fork Trick)
-    # If multiple moves offer the same result (e.g., Tie), pick the one 
-    # that is strategically superior (Center > Corner > Edge).
-    
+
     center = (1, 1)
     corners = [(0, 0), (0, 2), (2, 0), (2, 2)]
     
     selected_move = None
-    
-    # Priority 1: Take Center if it's a "best move"
+
     if center in best_moves:
         selected_move = center
-    # Priority 2: Take a Corner if it's a "best move"
+
     else:
         for move in best_moves:
             if move in corners:
                 selected_move = move
                 break
-    
-    # Priority 3: Take whatever is left (Edges)
+
     if selected_move is None and best_moves:
         selected_move = best_moves[0]
         
@@ -121,7 +109,6 @@ def play_game():
     print("AI is X (Goes First), You are O")
     
     while True:
-        # --- AI TURN (First) ---
         print("AI is thinking...")
         move = best_move(board)
         if move:
@@ -135,8 +122,7 @@ def play_game():
             else:
                 print(f"Winner: {winner} (AI)")
             break
-            
-        # --- HUMAN TURN (Second) ---
+
         while True:
             try:
                 user_input = input("Enter row and col (0-2) for 'O': ").split()
