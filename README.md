@@ -1,6 +1,6 @@
 # Artificial Intelligence Projects
 
-This repository contains the projects I completed during my AI Internship at CodSoft.
+This repository contains the projects I have done while learning about Artificial Intelligence.
 
 ## Projects Overview
 
